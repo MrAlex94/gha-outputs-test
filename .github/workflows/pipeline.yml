@@ -9,22 +9,28 @@ jobs:
     name: Build
     uses: ./.github/workflows/build.yml
     
-  output-test:
+  output-test1:
     runs-on: ubuntu-latest
     needs: build
     steps:
       - run: echo ${{ needs.build.outputs.versiondisplay }}
 
-#   stage:
-#     name: Staging
-#     uses: ./.github/workflows/stage.yml
-#     needs: build
-#     with:
-#       DISPLAY_VERSION : ${{ needs.build.outputs.display-version }}
-# 
-#   production:
-#     name: Production
-#     uses: ./.github/workflows/production.yml
-#     needs: stage
-#     with:
-#       DISPLAY_VERSION : ${{ needs.stage.outputs.display-version }}
+  stage:
+    name: Staging
+    uses: ./.github/workflows/stage.yml
+    needs: build
+    with:
+      DISPLAY_VERSION : ${{ needs.build.outputs.versiondisplay }}
+      
+  output-test2:
+    runs-on: ubuntu-latest
+    needs: stage
+    steps:
+      - run: echo ${{ needs.stage.outputs.versiondisplay }}
+
+  # production:
+  #   name: Production
+  #   uses: ./.github/workflows/production.yml
+  #   needs: stage
+  #   with:
+  #     DISPLAY_VERSION : ${{ needs.stage.outputs.display-version }}
