@@ -10,7 +10,7 @@ on:
     outputs:
         versiondisplay:
           description: "Display Version"
-          value: ${{ jobs.build.outputs.versionout }}
+          value: ${{ jobs.stage.outputs.versionout }}
 
 jobs:
   stage:
@@ -22,6 +22,6 @@ jobs:
       - name: Test input
         run: |
           echo ${{ inputs.DISPLAY_VERSION }}
-      - name: 📣 Export VERSION_DISPLAY
+      - name: Output VERSION_DISPLAY
         id: versionexport
         run: echo "::set-output name=version::$(echo ${{ inputs.DISPLAY_VERSION }})"
