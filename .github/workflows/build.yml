@@ -31,8 +31,3 @@ jobs:
         run: |
           echo ${{ env.VERSION_DISPLAY }}
           echo ${{ steps.versionexport.outputs.version }}
-
-
-      - name: 🏗 Build
-        run: |
-          ./mach build
