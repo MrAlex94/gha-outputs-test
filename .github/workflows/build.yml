@@ -1,0 +1,39 @@
+name: Build Workflow
+
+on:
+  workflow_call:
+    outputs:
+      versiondisplay:
+        description: "Display Version"
+        value: ${{ jobs.build.outputs.versionout }}
+
+jobs:
+  build:
+    name: Build Job
+    runs-on: ubuntu-22.04
+    outputs:
+      versionout: ${{ steps.versionexport.outputs.version }}
+    steps:
+      - name: 📤 Checkout
+        uses: actions/checkout@v3
+          
+      - name: 📣 Set VERSION_DISPLAY as GITHUB_ENV
+        if: ${{ inputs.TRIGGER_EVENT == 'push' }}
+        run: |
+          echo 'VERSION_DISPLAY<<EOF' >> $GITHUB_ENV
+          cat browser/config/version_display.txt >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+          
+      - name: 📣 Export VERSION_DISPLAY
+        id: versionexport
+        run: echo "::set-output name=version::$(echo ${{ env.VERSION_DISPLAY }})"
+        
+      - name: Test output?
+        run: |
+          echo ${{ env.VERSION_DISPLAY }})
+          echo ${{ steps.versionexport.outputs.version }}
+
+
+      - name: 🏗 Build
+        run: |
+          ./mach build

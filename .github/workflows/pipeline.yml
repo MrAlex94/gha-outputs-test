@@ -1,0 +1,30 @@
+name: Pipeline
+
+on:
+  push:
+
+jobs:
+
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yml
+    
+  output-test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - run: echo ${{ needs.build.outputs.version }}
+
+#   stage:
+#     name: Staging
+#     uses: ./.github/workflows/stage.yml
+#     needs: build
+#     with:
+#       DISPLAY_VERSION : ${{ needs.build.outputs.display-version }}
+# 
+#   production:
+#     name: Production
+#     uses: ./.github/workflows/production.yml
+#     needs: stage
+#     with:
+#       DISPLAY_VERSION : ${{ needs.stage.outputs.display-version }}
