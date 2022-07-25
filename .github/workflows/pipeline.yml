@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - run: echo ${{ needs.build.outputs.version }}
+      - run: echo ${{ needs.build.outputs.versiondisplay }}
 
 #   stage:
 #     name: Staging
