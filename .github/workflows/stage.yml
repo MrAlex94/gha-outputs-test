@@ -10,13 +10,18 @@ on:
     outputs:
         versiondisplay:
           description: "Display Version"
-          value: ${{ inputs.DISPLAY_VERSION }}
+          value: ${{ jobs.build.outputs.versionout }}
 
 jobs:
-        stage:
-          name: Stage Job
-          runs-on: ubuntu-22.04
-          steps:            
-            - name: Test input
-              run: |
-                echo ${{ inputs.DISPLAY_VERSION }}
+  stage:
+    name: Stage Job
+    runs-on: ubuntu-22.04
+    outputs:
+      versionout: ${{ steps.versionexport.outputs.version }}
+    steps:            
+      - name: Test input
+        run: |
+          echo ${{ inputs.DISPLAY_VERSION }}
+      - name: 📣 Export VERSION_DISPLAY
+        id: versionexport
+        run: echo "::set-output name=version::$(echo ${{ inputs.DISPLAY_VERSION }})"
